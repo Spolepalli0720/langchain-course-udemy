@@ -37,6 +37,7 @@ def main():
     response=chain.invoke(input={"information": information})
     # print("Response:", response)
     print(response.content)
+    print(response.usage_metadata)
 
 
 
