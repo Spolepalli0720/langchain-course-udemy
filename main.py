@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from langchain_core.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
+from langchain_ollama import ChatOllama
 # from langchain_deepseek import DeepseekAPIWrapper
 
 
@@ -25,14 +26,22 @@ def main():
         input_variables=["information"],
         template=summary_template,
     )
-
-    llm=ChatOpenAI(
-        model_name="deepseek-chat",
+    #Below code is for deepseek api
+    # llm=ChatOpenAI(
+    #     model_name="deepseek-chat",
+    #     temperature=0,
+    #     max_tokens=2000,
+    #     openai_api_key=os.getenv("DEEPSEEK_API_KEY"),
+    #     openai_api_base="https://api.deepseek.com",
+    # )
+    #Below code is for local ollama 
+    llm=ChatOllama(
+        model="deepseek-r1:1.5b",
         temperature=0,
         max_tokens=2000,
-        openai_api_key=os.getenv("DEEPSEEK_API_KEY"),
-        openai_api_base="https://api.deepseek.com",
+        base_url="http://localhost:11434",
     )
+
     chain=summary_prompt_template | llm
     response=chain.invoke(input={"information": information})
     # print("Response:", response)
